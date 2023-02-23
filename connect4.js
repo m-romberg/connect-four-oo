@@ -84,6 +84,7 @@ class Game {
     const x = +evt.target.id;
 
     // get next spot in column (if none, ignore click)
+    console.log(this);
     const y = this.findSpotForCol(x);
     if (y === null) {
       return;
