@@ -141,7 +141,7 @@ class Game {
       );
     }
     //checkForWin runs cb on _win; ensure 'this' is 'Game()'
-    let newWin = _win.bind(this);
+    let boundWin = _win.bind(this);
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -153,7 +153,7 @@ class Game {
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
         // find winner (only checking each win-possibility as needed)
-        if (newWin(horiz) || newWin(vert) || newWin(diagDR) || newWin(diagDL)) {
+        if (boundWin(horiz) || boundWin(vert) || boundWin(diagDR) || boundWin(diagDL)) {
           return true;
         }
       }
