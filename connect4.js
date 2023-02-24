@@ -10,6 +10,7 @@ class Game {
     this.height = height;
     this.currPlayer = 1;
     this.board = [];
+    this.handleClick = this.handleClick.bind(this);
     this.makeBoard();
     this.makeHtmlBoard();
   }
@@ -69,7 +70,9 @@ class Game {
     piece.classList.add(`p${this.currPlayer}`);
     piece.style.top = -50 * (y + 2);
 
-    const spot = document.getElementById(`$c-${y}-${x}`);
+    const spot = document.getElementById(`c-${y}-${x}`);
+    //issue with spot
+    // console.log("spot", spot, 'x', x, 'y', y, this.currPlayer) ;
     spot.append(piece);
   }
   /** endGame: announce game end */
@@ -84,7 +87,6 @@ class Game {
     const x = +evt.target.id;
 
     // get next spot in column (if none, ignore click)
-    console.log(this);
     const y = this.findSpotForCol(x);
     if (y === null) {
       return;
@@ -110,11 +112,11 @@ class Game {
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
   checkForWin() {
+
     function _win(cells) {
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
-
       return cells.every(
         ([y, x]) =>
           y >= 0 &&
@@ -124,6 +126,7 @@ class Game {
           this.board[y][x] === this.currPlayer
       );
     }
+    let newWin = _win.bind(this);
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -135,7 +138,7 @@ class Game {
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
         // find winner (only checking each win-possibility as needed)
-        if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+        if (newWin(horiz) || newWin(vert) || newWin(diagDR) || newWin(diagDL)) {
           return true;
         }
       }
@@ -166,6 +169,7 @@ class Game {
 
 
 let myGame = new Game();
+
 //POJO
 // makeBoard();
 // makeHtmlBoard();
