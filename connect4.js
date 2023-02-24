@@ -16,6 +16,7 @@ class Game {
     this.handleClick = this.handleClick.bind(this);
     this.makeBoard();
     this.makeHtmlBoard();
+    this.gameOver = false;
   }
 
   /** makeBoard: create in-JS board structure:
@@ -89,6 +90,7 @@ class Game {
   /** endGame: announce game end */
 
   endGame(msg) {
+    this.gameOver = true;
     alert(msg);
   }
 
@@ -97,13 +99,15 @@ class Game {
   handleClick(evt) {
     // get x from ID of clicked cell
     const x = +evt.target.id;
+    if (this.gameOver){
+      return;
+    }
 
     // get next spot in column (if none, ignore click)
     const y = this.findSpotForCol(x);
     if (y === null) {
       return;
     }
-
     // place piece in board and add to HTML table
     this.board[y][x] = this.currPlayer;
     this.placeInTable(y, x);
@@ -161,6 +165,8 @@ class Game {
   }
 }
 
+function newGame(){
+  let myGame = new Game();
+}
 
-
-let myGame = new Game();
+document.getElementById("start-game").addEventListener("click" ,newGame );
