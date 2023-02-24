@@ -80,7 +80,7 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.style.backgroundColor =this.currPlayer.color;
+    piece.style.backgroundColor = this.currPlayer.color;
     piece.style.top = -50 * (y + 2);
 
     const spot = document.getElementById(`c-${y}-${x}`);
@@ -88,8 +88,7 @@ class Game {
     // console.log("spot", spot, 'x', x, 'y', y, this.currPlayer) ;
     spot.append(piece);
   }
-
-  /** endGame: announce game end */
+  /** endGame: announce game end switch gameOver to true */
 
   endGame(msg) {
     this.gameOver = true;
@@ -116,7 +115,7 @@ class Game {
 
     // check for win
     if (this.checkForWin()) {
-      console.log("current player",this.currPlayer)
+      console.log("current player", this.currPlayer)
       return this.endGame(`Player ${this.currPlayer.color} won!`);
     }
 
@@ -126,7 +125,7 @@ class Game {
     }
 
     // switch players
-    this.currPlayer = JSON.stringify(this.currPlayer) === JSON.stringify(this.p1) ? this.p2 : this.p1;
+    this.currPlayer = this.currPlayer === this.p1 ? this.p2 : this.p1;
   }
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -170,8 +169,7 @@ class Game {
 
 /** player class. currently keeps the player's color to display in the board */
 class Player {
-  constructor(color)
-  {
+  constructor(color) {
     this.color = color;
   }
 }
@@ -182,7 +180,7 @@ function newGame() {
   let color2 = document.getElementById("p2-color").value;
   let p1 = new Player(color1);
   let p2 = new Player(color2);
-  let myGame = new Game(p1,p2);
+  let myGame = new Game(p1, p2);
 }
 
 document.getElementById("start-game").addEventListener("click", newGame);
