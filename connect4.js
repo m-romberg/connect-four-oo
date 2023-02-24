@@ -8,10 +8,12 @@
  */
 
 class Game {
-  constructor(width = 7, height = 6) {
+  constructor(p1, p2, width = 7, height = 6) {
+    this.p1 = p1;
+    this.p2 = p2;
     this.width = width;
     this.height = height;
-    this.currPlayer = 1;
+    this.currPlayer = p1;
     this.board = [];
     this.handleClick = this.handleClick.bind(this);
     this.makeBoard();
@@ -78,7 +80,7 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${this.currPlayer}`);
+    piece.style.backgroundColor =this.currPlayer.color;
     piece.style.top = -50 * (y + 2);
 
     const spot = document.getElementById(`c-${y}-${x}`);
@@ -99,7 +101,7 @@ class Game {
   handleClick(evt) {
     // get x from ID of clicked cell
     const x = +evt.target.id;
-    if (this.gameOver){
+    if (this.gameOver) {
       return;
     }
 
@@ -114,7 +116,8 @@ class Game {
 
     // check for win
     if (this.checkForWin()) {
-      return this.endGame(`Player ${this.currPlayer} won!`);
+      console.log("current player",this.currPlayer)
+      return this.endGame(`Player ${this.currPlayer.color} won!`);
     }
 
     // check for tie
@@ -123,7 +126,7 @@ class Game {
     }
 
     // switch players
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    this.currPlayer = JSON.stringify(this.currPlayer) === JSON.stringify(this.p1) ? this.p2 : this.p1;
   }
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -165,8 +168,21 @@ class Game {
   }
 }
 
-function newGame(){
-  let myGame = new Game();
+/** player class. currently keeps the player's color to display in the board */
+class Player {
+  constructor(color)
+  {
+    this.color = color;
+  }
 }
 
-document.getElementById("start-game").addEventListener("click" ,newGame );
+/** this function starts a new game with 2 players */
+function newGame() {
+  let color1 = document.getElementById("p1-color").value;
+  let color2 = document.getElementById("p2-color").value;
+  let p1 = new Player(color1);
+  let p2 = new Player(color2);
+  let myGame = new Game(p1,p2);
+}
+
+document.getElementById("start-game").addEventListener("click", newGame);
