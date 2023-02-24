@@ -1,9 +1,12 @@
+'use strict';
+
 /** Connect Four
  *
  * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
+
 class Game {
   constructor(width = 7, height = 6) {
     this.width = width;
@@ -14,18 +17,22 @@ class Game {
     this.makeBoard();
     this.makeHtmlBoard();
   }
+
   /** makeBoard: create in-JS board structure:
  *   board = array of rows, each row is array of cells  (board[y][x])
  */
+
   makeBoard() {
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
     }
+
   }
   /** makeHtmlBoard: make HTML table and row of column tops. */
 
   makeHtmlBoard() {
     const board = document.getElementById('board');
+    board.innerHTML = "";
 
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
@@ -55,6 +62,7 @@ class Game {
   }
 
   /** findSpotForCol: given column x, return top empty y (null if filled) */
+
   findSpotForCol(x) {
     for (let y = this.height - 1; y >= 0; y--) {
       if (!this.board[y][x]) {
@@ -63,7 +71,9 @@ class Game {
     }
     return null;
   }
+
   /** placeInTable: update DOM to place piece into HTML table of board */
+
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
@@ -75,11 +85,13 @@ class Game {
     // console.log("spot", spot, 'x', x, 'y', y, this.currPlayer) ;
     spot.append(piece);
   }
+
   /** endGame: announce game end */
 
   endGame(msg) {
     alert(msg);
   }
+
   /** handleClick: handle click of column top to play piece */
 
   handleClick(evt) {
@@ -109,6 +121,7 @@ class Game {
     // switch players
     this.currPlayer = this.currPlayer === 1 ? 2 : 1;
   }
+
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
   checkForWin() {
@@ -117,6 +130,7 @@ class Game {
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
+      // console.log('inside win', this);
       return cells.every(
         ([y, x]) =>
           y >= 0 &&
@@ -126,6 +140,7 @@ class Game {
           this.board[y][x] === this.currPlayer
       );
     }
+    //checkForWin runs cb on _win; ensure 'this' is 'Game()'
     let newWin = _win.bind(this);
 
     for (let y = 0; y < this.height; y++) {
@@ -145,31 +160,7 @@ class Game {
     }
   }
 }
-// POJO variabl
-// const WIDTH = 7;
-// const HEIGHT = 6;
-
-// let currPlayer = 1; // active player: 1 or 2
-// let board = []; // array of rows, each row is array of cells  (board[y][x])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 let myGame = new Game();
-
-//POJO
-// makeBoard();
-// makeHtmlBoard();
